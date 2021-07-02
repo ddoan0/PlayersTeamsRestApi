@@ -1,4 +1,4 @@
-package com.pcalouche.tma_spring_boot_test;
+package com.doan.tma_spring_boot_test;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

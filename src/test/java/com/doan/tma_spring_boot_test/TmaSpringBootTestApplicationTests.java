@@ -1,4 +1,4 @@
-package com.pcalouche.tma_spring_boot_test;
+package com.doan.tma_spring_boot_test;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
