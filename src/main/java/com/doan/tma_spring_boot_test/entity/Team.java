@@ -1,7 +1,12 @@
 package com.doan.tma_spring_boot_test.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "teams")
@@ -9,6 +14,7 @@ public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String name;
     private String city;
     private String mascot;
@@ -19,6 +25,14 @@ public class Team {
         this.name = name;
         this.city = city;
         this.mascot = mascot;
+    }
+
+    public Integer getId() {
+        return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -45,13 +59,13 @@ public class Team {
         this.mascot = mascot;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+//    public Set<Player> getPlayers() {
+//        return players;
+//    }
+//
+//    public void setPlayers(Set<Player> players) {
+//        this.players = players;
+//    }
 
     @Override
     public boolean equals(Object o) {

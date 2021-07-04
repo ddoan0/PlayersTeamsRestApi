@@ -1,7 +1,9 @@
 package com.doan.tma_spring_boot_test.api.controller;
 
 import com.doan.tma_spring_boot_test.api.TeamNotFoundException;
+import com.doan.tma_spring_boot_test.entity.Player;
 import com.doan.tma_spring_boot_test.entity.Team;
+import com.doan.tma_spring_boot_test.repository.PlayerRepository;
 import com.doan.tma_spring_boot_test.repository.TeamRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +13,11 @@ import java.util.List;
 public class TeamController {
 
     private final TeamRepository repository;
+    private final PlayerRepository playerRepository;
 
-    TeamController(TeamRepository repository) {
+    TeamController(TeamRepository repository, PlayerRepository playerRepository) {
         this.repository = repository;
+        this.playerRepository = playerRepository;
     }
 
 
@@ -34,22 +38,23 @@ public class TeamController {
     }
 
     @PutMapping("/v1/teams/{id}")
-        Team replaceTeam(@RequestBody Team newTeam, @PathVariable Integer id) {
-            return repository.findById(id)
-                    .map(team -> {
-                        team.setName(newTeam.getName());
-                        team.setCity(newTeam.getCity());
-                        team.setMascot(newTeam.getMascot());
-                        return repository.save(team);
-                    })
-                    .orElseGet(() -> {
-                        newTeam.setId(id);
-                        return repository.save(newTeam);
-                    });
-        }
+    Team replaceTeam(@RequestBody Team newTeam, @PathVariable Integer id) {
+        return repository.findById(id)
+                .map(team -> {
+                    team.setName(newTeam.getName());
+                    team.setCity(newTeam.getCity());
+                    team.setMascot(newTeam.getMascot());
+                    return repository.save(team);
+                })
+                .orElseGet(() -> {
+                    newTeam.setId(id);
+                    return repository.save(newTeam);
+                });
+    }
 
     @DeleteMapping("/v1/teams/{id}")
     void deleteTeam(@PathVariable Integer id) {
         repository.deleteById(id);
     }
+
 }
