@@ -13,7 +13,7 @@ import java.util.Objects;
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer playerId;
+    private Integer id;
 
     private String name;
     private String position;
@@ -91,11 +91,11 @@ public class Player {
     }
 
     public Integer getId() {
-        return playerId;
+        return id;
     }
 
     public void setId(Integer id) {
-        this.playerId = id;
+        this.id = id;
     }
 
     public Team getTeam() {
@@ -120,11 +120,11 @@ public class Player {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
-        return playerId.equals(player.playerId) && name.equals(player.name) && position.equals(player.position) && age.equals(player.age) && height.equals(player.height) && weight.equals(player.weight) && college.equals(player.college) && team.equals(player.team) && salary.equals(player.salary);
+        return id.equals(player.id) && name.equals(player.name) && position.equals(player.position) && age.equals(player.age) && height.equals(player.height) && weight.equals(player.weight) && college.equals(player.college) && team.equals(player.team) && salary.equals(player.salary);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(playerId, name, position, age, height, weight, college, team, salary);
+        return Objects.hash(id, name, position, age, height, weight, college, team, salary);
     }
 }
