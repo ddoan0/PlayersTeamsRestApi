@@ -21,6 +21,21 @@ public class TeamController {
         return repository.findAll();
     }
 
+    @GetMapping("/v1/teams/search")
+    List<Team> findByQuery(@RequestParam(required = false) String name,
+                           @RequestParam(required = false) String city,
+                           @RequestParam(required = false) String mascot) {
+        if(name != null) {
+            return repository.findByNameIs(name);
+        } else if (city != null) {
+            return repository.findByCityIs(city);
+        } else if (mascot != null) {
+            return repository.findByMascotIs(mascot);
+        } else {
+            return repository.findAll();
+        }
+    }
+
     @PostMapping("/v1/teams")
     Team newTeam(@RequestBody Team newTeam) {
         return repository.save(newTeam);
