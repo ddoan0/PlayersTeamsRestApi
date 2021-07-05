@@ -1,14 +1,22 @@
 # TMA Spring Boot Test
 This application exposes REST endpoints to create, read, update, and delete players and teams. 
 
+# Thought Process
+I started this project with the entities. The Player entity has a many-to-one relationship to Team. I then added the controllers to
+handle the routes. I did not separate the business logic into services as they were not too large but in a more complex setting, extracting that logic
+and putting it into services would be better. The Player repository has a findByTeamId method because of its dependency with a team.
+The Team repository contains three methods that are used to take care of the search endpoint. I used a command line runner to
+populate the database with some initial teams and players.
+
 # Software Requirements
 1. Maven
-2. Java 11
+2. Java 11 - Have JAVA_HOME environment variable set to use JDK 11
 
 # Build and Run Instructions
 1. Navigate to the tma_spring_boot_test directory
-2. Run mvn clean install
+2. Run mvn clean install or use the mvnw wrapper
 3. Run java -jar target/tma_spring_boot_test-0.0.1-SNAPSHOT.jar
+4. The application is fully up when the 4 preloading statements are printed to the terminal.
 
 # How to use the API
 With the application running, the following endpoints will be available on localhost:8080
