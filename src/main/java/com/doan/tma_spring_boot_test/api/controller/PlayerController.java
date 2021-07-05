@@ -5,9 +5,11 @@ import com.doan.tma_spring_boot_test.entity.Player;
 import com.doan.tma_spring_boot_test.repository.PlayerRepository;
 import com.doan.tma_spring_boot_test.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 
 @RestController
 public class PlayerController {
@@ -19,8 +21,8 @@ public class PlayerController {
     private PlayerRepository playerRepository;
 
     @GetMapping("/v1/teams/{teamId}/players")
-    public Page<Player> getAllPlayersByTeamId(@PathVariable (value = "teamId") Integer teamId, Pageable pageable) {
-        return playerRepository.findByTeamId(teamId, pageable);
+    public List<Player> getAllPlayersByTeamId(@PathVariable (value = "teamId") Integer teamId) {
+        return playerRepository.findByTeamId(teamId);
     }
 
     @PostMapping("/v1/teams/{teamId}/players")
@@ -60,10 +62,6 @@ public class PlayerController {
     @DeleteMapping("/v1/teams/{teamId}/players/{playerId}")
     public void deletePlayer(@PathVariable Integer teamId,
                              @PathVariable Integer playerId) {
-//        return playerRepository.findByIdAndTeamId(teamId, playerId).map(player -> {
-//            playerRepository.delete(player);
-//            return null;
-//        }).orElseThrow(() -> new TeamNotFoundException(playerId));
         playerRepository.deleteById(playerId);
     }
 }

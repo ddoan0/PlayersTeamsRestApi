@@ -1,12 +1,7 @@
 package com.doan.tma_spring_boot_test.entity;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
-import java.util.Set;
+
 
 @Entity
 @Table(name = "teams")
@@ -58,14 +53,6 @@ public class Team {
     public void setMascot(String mascot) {
         this.mascot = mascot;
     }
-
-//    public Set<Player> getPlayers() {
-//        return players;
-//    }
-//
-//    public void setPlayers(Set<Player> players) {
-//        this.players = players;
-//    }
 
     @Override
     public boolean equals(Object o) {

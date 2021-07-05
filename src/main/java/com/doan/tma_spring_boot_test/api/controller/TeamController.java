@@ -1,9 +1,7 @@
 package com.doan.tma_spring_boot_test.api.controller;
 
 import com.doan.tma_spring_boot_test.api.TeamNotFoundException;
-import com.doan.tma_spring_boot_test.entity.Player;
 import com.doan.tma_spring_boot_test.entity.Team;
-import com.doan.tma_spring_boot_test.repository.PlayerRepository;
 import com.doan.tma_spring_boot_test.repository.TeamRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,13 +11,10 @@ import java.util.List;
 public class TeamController {
 
     private final TeamRepository repository;
-    private final PlayerRepository playerRepository;
 
-    TeamController(TeamRepository repository, PlayerRepository playerRepository) {
+    TeamController(TeamRepository repository) {
         this.repository = repository;
-        this.playerRepository = playerRepository;
     }
-
 
     @GetMapping("/v1/teams")
     List<Team> all() {
