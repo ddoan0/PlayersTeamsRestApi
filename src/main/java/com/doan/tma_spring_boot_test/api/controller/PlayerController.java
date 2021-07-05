@@ -1,10 +1,10 @@
 package com.doan.tma_spring_boot_test.api.controller;
 
+import com.doan.tma_spring_boot_test.api.PlayerNotFoundException;
 import com.doan.tma_spring_boot_test.api.TeamNotFoundException;
 import com.doan.tma_spring_boot_test.entity.Player;
 import com.doan.tma_spring_boot_test.repository.PlayerRepository;
 import com.doan.tma_spring_boot_test.repository.TeamRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +24,12 @@ public class PlayerController {
 
     @GetMapping("/v1/teams/{teamId}/players")
     public List<Player> getAllPlayersByTeamId(@PathVariable (value = "teamId") Integer teamId) {
-        return playerRepository.findByTeamId(teamId);
+        List<Player> playerList = playerRepository.findByTeamId(teamId);
+        if(playerList.size() == 0) {
+            throw new TeamNotFoundException(teamId);
+        } else {
+            return playerList;
+        }
     }
 
     @PostMapping("/v1/teams/{teamId}/players")
@@ -64,6 +69,14 @@ public class PlayerController {
     @DeleteMapping("/v1/teams/{teamId}/players/{playerId}")
     public void deletePlayer(@PathVariable Integer teamId,
                              @PathVariable Integer playerId) {
-        playerRepository.deleteById(playerId);
+        if(!teamRepository.existsById(teamId)) {
+            throw new TeamNotFoundException(teamId);
+        }
+        if(playerRepository.existsById(playerId)) {
+            playerRepository.deleteById(playerId);
+        }
+        else {
+            throw new PlayerNotFoundException(playerId);
+        }
     }
 }

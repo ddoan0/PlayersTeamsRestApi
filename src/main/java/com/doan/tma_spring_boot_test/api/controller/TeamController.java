@@ -67,7 +67,12 @@ public class TeamController {
 
     @DeleteMapping("/v1/teams/{id}")
     void deleteTeam(@PathVariable Integer id) {
-        repository.deleteById(id);
+        if(repository.existsById(id)) {
+            repository.deleteById(id);
+        }
+        else {
+            throw new TeamNotFoundException(id);
+        }
     }
 
 }
