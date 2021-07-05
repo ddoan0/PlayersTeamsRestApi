@@ -14,11 +14,13 @@ import java.util.List;
 @RestController
 public class PlayerController {
 
-    @Autowired
-    private TeamRepository teamRepository;
+    private final TeamRepository teamRepository;
+    private final PlayerRepository playerRepository;
 
-    @Autowired
-    private PlayerRepository playerRepository;
+    public PlayerController(TeamRepository teamRepository, PlayerRepository playerRepository) {
+        this.teamRepository = teamRepository;
+        this.playerRepository = playerRepository;
+    }
 
     @GetMapping("/v1/teams/{teamId}/players")
     public List<Player> getAllPlayersByTeamId(@PathVariable (value = "teamId") Integer teamId) {

@@ -25,14 +25,17 @@ public class TeamController {
     List<Team> findByQuery(@RequestParam(required = false) String name,
                            @RequestParam(required = false) String city,
                            @RequestParam(required = false) String mascot) {
-        if(name != null) {
-            return repository.findByNameIs(name);
-        } else if (city != null) {
-            return repository.findByCityIs(city);
-        } else if (mascot != null) {
-            return repository.findByMascotIs(mascot);
+        List<Team> nameFind = repository.findByNameIs(name);
+        List<Team> cityFind = repository.findByCityIs(city);
+        List<Team> mascotFind = repository.findByMascotIs(mascot);
+        if(name != null && nameFind.size() > 0) {
+            return nameFind;
+        } else if (city != null && cityFind.size() > 0) {
+            return cityFind;
+        } else if (mascot != null && mascotFind.size() > 0) {
+            return mascotFind;
         } else {
-            return repository.findAll();
+            throw new TeamNotFoundException();
         }
     }
 
