@@ -8,6 +8,9 @@ and putting it into services would be better. The Player repository has a findBy
 The Team repository contains three methods that are used to take care of the search endpoint. I used a command line runner to
 populate the database with some initial teams and players.
 
+Known Issues:
+1. Due to the time constraint and design choices, unit testing the application was more cumbersome than expected, so they will not pass.
+
 # Software Requirements
 1. Maven
 2. Java 11 - Have JAVA_HOME environment variable set to use JDK 11
@@ -20,6 +23,7 @@ populate the database with some initial teams and players.
 
 # How to use the API
 With the application running, the following endpoints will be available on localhost:8080
+Player weight is in pounds and height is in inches.
 
 ### GET /v1/teams
 Finds all teams

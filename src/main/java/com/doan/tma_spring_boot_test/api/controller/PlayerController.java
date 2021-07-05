@@ -67,13 +67,15 @@ public class PlayerController {
     }
 
     @DeleteMapping("/v1/teams/{teamId}/players/{playerId}")
-    public void deletePlayer(@PathVariable Integer teamId,
-                             @PathVariable Integer playerId) {
+    public List<Player> deletePlayer(@PathVariable Integer teamId,
+                                     @PathVariable Integer playerId) {
         if(!teamRepository.existsById(teamId)) {
             throw new TeamNotFoundException(teamId);
         }
         if(playerRepository.existsById(playerId)) {
+            List<Player> retPlayer = playerRepository.findByTeamId(teamId);
             playerRepository.deleteById(playerId);
+            return retPlayer;
         }
         else {
             throw new PlayerNotFoundException(playerId);

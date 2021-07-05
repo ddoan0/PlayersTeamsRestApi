@@ -6,6 +6,7 @@ import com.doan.tma_spring_boot_test.repository.TeamRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class TeamController {
@@ -66,9 +67,11 @@ public class TeamController {
     }
 
     @DeleteMapping("/v1/teams/{id}")
-    void deleteTeam(@PathVariable Integer id) {
+    Optional<Team> deleteTeam(@PathVariable Integer id) {
         if(repository.existsById(id)) {
+            Optional<Team> retTeam = repository.findById(id);
             repository.deleteById(id);
+            return retTeam;
         }
         else {
             throw new TeamNotFoundException(id);
