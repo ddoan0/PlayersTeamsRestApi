@@ -1,11 +1,7 @@
 package com.doan.tma_spring_boot_test.api.controller;
 
-import com.doan.tma_spring_boot_test.api.TeamNotFoundException;
 import com.doan.tma_spring_boot_test.entity.Team;
-import com.doan.tma_spring_boot_test.repository.TeamRepository;
 import com.doan.tma_spring_boot_test.service.TeamService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
