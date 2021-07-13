@@ -3,6 +3,9 @@ package com.doan.tma_spring_boot_test.api.controller;
 import com.doan.tma_spring_boot_test.api.TeamNotFoundException;
 import com.doan.tma_spring_boot_test.entity.Team;
 import com.doan.tma_spring_boot_test.repository.TeamRepository;
+import com.doan.tma_spring_boot_test.service.TeamService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,71 +14,42 @@ import java.util.Optional;
 @RestController
 public class TeamController {
 
-    private final TeamRepository repository;
+    private TeamService teamService;
 
-    TeamController(TeamRepository repository) {
-        this.repository = repository;
+    TeamController(TeamService teamService) {
+        this.teamService = teamService;
     }
 
     @GetMapping("/v1/teams")
     List<Team> all() {
-        return repository.findAll();
+        return teamService.getAllTeams();
     }
 
     @GetMapping("/v1/teams/search")
     List<Team> findByQuery(@RequestParam(required = false) String name,
                            @RequestParam(required = false) String city,
                            @RequestParam(required = false) String mascot) {
-        List<Team> nameFind = repository.findByNameIs(name);
-        List<Team> cityFind = repository.findByCityIs(city);
-        List<Team> mascotFind = repository.findByMascotIs(mascot);
-        if(name != null && nameFind.size() > 0) {
-            return nameFind;
-        } else if (city != null && cityFind.size() > 0) {
-            return cityFind;
-        } else if (mascot != null && mascotFind.size() > 0) {
-            return mascotFind;
-        } else {
-            throw new TeamNotFoundException();
-        }
+        return teamService.getTeamByQuery(name, city, mascot);
     }
 
     @PostMapping("/v1/teams")
     Team newTeam(@RequestBody Team newTeam) {
-        return repository.save(newTeam);
+        return teamService.addTeam(newTeam);
     }
 
     @GetMapping("/v1/teams/{id}")
     Team one(@PathVariable Integer id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new TeamNotFoundException(id));
+        return teamService.getTeamById(id);
     }
 
     @PutMapping("/v1/teams/{id}")
     Team replaceTeam(@RequestBody Team newTeam, @PathVariable Integer id) {
-        return repository.findById(id)
-                .map(team -> {
-                    team.setName(newTeam.getName());
-                    team.setCity(newTeam.getCity());
-                    team.setMascot(newTeam.getMascot());
-                    return repository.save(team);
-                })
-                .orElseGet(() -> {
-                    newTeam.setId(id);
-                    return repository.save(newTeam);
-                });
+        return teamService.updateTeam(newTeam, id);
     }
 
     @DeleteMapping("/v1/teams/{id}")
     Optional<Team> deleteTeam(@PathVariable Integer id) {
-        if(repository.existsById(id)) {
-            Optional<Team> retTeam = repository.findById(id);
-            repository.deleteById(id);
-            return retTeam;
-        }
-        else {
-            throw new TeamNotFoundException(id);
-        }
+        return teamService.deleteTeam(id);
     }
 
 }
