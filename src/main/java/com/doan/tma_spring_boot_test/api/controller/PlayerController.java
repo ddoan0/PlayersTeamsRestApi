@@ -1,11 +1,8 @@
 package com.doan.tma_spring_boot_test.api.controller;
 
-import com.doan.tma_spring_boot_test.api.PlayerNotFoundException;
-import com.doan.tma_spring_boot_test.api.TeamNotFoundException;
 import com.doan.tma_spring_boot_test.entity.Player;
-import com.doan.tma_spring_boot_test.repository.PlayerRepository;
-import com.doan.tma_spring_boot_test.repository.TeamRepository;
 
+import com.doan.tma_spring_boot_test.service.PlayerService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,71 +11,32 @@ import java.util.List;
 @RestController
 public class PlayerController {
 
-    private final TeamRepository teamRepository;
-    private final PlayerRepository playerRepository;
+    private PlayerService playerService;
 
-    public PlayerController(TeamRepository teamRepository, PlayerRepository playerRepository) {
-        this.teamRepository = teamRepository;
-        this.playerRepository = playerRepository;
+    public PlayerController(PlayerService playerService) {
+        this.playerService = playerService;
     }
 
     @GetMapping("/v1/teams/{teamId}/players")
     public List<Player> getAllPlayersByTeamId(@PathVariable (value = "teamId") Integer teamId) {
-        List<Player> playerList = playerRepository.findByTeamId(teamId);
-        if(playerList.size() == 0) {
-            throw new TeamNotFoundException(teamId);
-        } else {
-            return playerList;
-        }
+        return playerService.getAllPlayers(teamId);
     }
 
     @PostMapping("/v1/teams/{teamId}/players")
     public Player createPlayer(@PathVariable Integer teamId, @RequestBody Player player) {
-        return teamRepository.findById(teamId).map(team -> {
-            player.setTeam(team);
-            return playerRepository.save(player);
-        }).orElseThrow(() -> new TeamNotFoundException(teamId));
+        return playerService.addPlayer(player, teamId);
     }
 
     @PutMapping("/v1/teams/{teamId}/players/{playerId}")
     public Player updatePlayer(@PathVariable Integer teamId,
                                @PathVariable Integer playerId,
                                @RequestBody Player newPlayer) {
-        if(!teamRepository.existsById(teamId)) {
-            throw new TeamNotFoundException(teamId);
-        }
-
-        return playerRepository.findById(playerId)
-                .map(player -> {
-                    player.setTeam(newPlayer.getTeam());
-                    player.setAge(newPlayer.getAge());
-                    player.setCollege(newPlayer.getCollege());
-                    player.setName(newPlayer.getName());
-                    player.setHeight(newPlayer.getHeight());
-                    player.setPosition(newPlayer.getPosition());
-                    player.setSalary(newPlayer.getSalary());
-                    player.setWeight(newPlayer.getWeight());
-                    return playerRepository.save(player);
-                })
-                .orElseGet(() -> {
-                    newPlayer.setId(playerId);
-                    return playerRepository.save(newPlayer);
-                });
+        return playerService.updatePlayer(newPlayer, playerId, teamId);
     }
 
     @DeleteMapping("/v1/teams/{teamId}/players/{playerId}")
     public List<Player> deletePlayer(@PathVariable Integer teamId,
                                      @PathVariable Integer playerId) {
-        if(!teamRepository.existsById(teamId)) {
-            throw new TeamNotFoundException(teamId);
-        }
-        if(playerRepository.existsById(playerId)) {
-            List<Player> retPlayer = playerRepository.findByTeamId(teamId);
-            playerRepository.deleteById(playerId);
-            return retPlayer;
-        }
-        else {
-            throw new PlayerNotFoundException(playerId);
-        }
+        return playerService.deletePlayer(playerId, teamId);
     }
 }
