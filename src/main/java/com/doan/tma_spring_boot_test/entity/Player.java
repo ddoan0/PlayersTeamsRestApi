@@ -117,17 +117,16 @@ public class Player {
         this.salary = salary;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
-        return id.equals(player.id) && name.equals(player.name) && position.equals(player.position) && age.equals(player.age) && height.equals(player.height) && weight.equals(player.weight) && college.equals(player.college) && team.equals(player.team) && salary.equals(player.salary);
+        return id.equals(player.id) && name.equals(player.name) && position.equals(player.position) && age.equals(player.age) && height.equals(player.height) && weight.equals(player.weight) && college.equals(player.college) && salary.equals(player.salary) && team.equals(player.team);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, position, age, height, weight, college, team, salary);
+        return Objects.hash(id, name, position, age, height, weight, college, salary, team);
     }
 }
