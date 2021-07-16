@@ -62,17 +62,6 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public List<Team> getTeamByQuery(String name, String city, String mascot) {
-        List<Team> nameFind = teamRepository.findByNameIs(name);
-        List<Team> cityFind = teamRepository.findByCityIs(city);
-        List<Team> mascotFind = teamRepository.findByMascotIs(mascot);
-        if(name != null && nameFind.size() > 0) {
-            return nameFind;
-        } else if (city != null && cityFind.size() > 0) {
-            return cityFind;
-        } else if (mascot != null && mascotFind.size() > 0) {
-            return mascotFind;
-        } else {
-            throw new TeamNotFoundException();
-        }
+        return teamRepository.teamByParams(name, city, mascot);
     }
 }
