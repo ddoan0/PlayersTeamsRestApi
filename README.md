@@ -8,9 +8,6 @@ and putting it into services would be better. The Player repository has a findBy
 The Team repository contains three methods that are used to take care of the search endpoint. I used a command line runner to
 populate the database with some initial teams and players.
 
-Known Issues:
-1. Due to the time constraint and design choices, unit testing the application was more cumbersome than expected, so they will not pass.
-
 # Software Requirements
 1. Maven
 2. Java 11 - Have JAVA_HOME environment variable set to use JDK 11
@@ -23,7 +20,13 @@ Known Issues:
 
 # How to use the API
 With the application running, the following endpoints will be available on localhost:8080
+
 Player weight is in pounds and height is in inches.
+
+Get a JSON Web Token by first sending a POST request to localhost:8080/login with header Content-Type: application/x-www-form-urlencoded
+and query parameters username=user and password=1234
+
+Copy the jwt and paste it in HTTP headers 'Authorization': Bearer (jwt)
 
 ### GET /v1/teams
 Finds all teams
@@ -110,8 +113,6 @@ JSON payload
 Deletes a player from a team using the player ID
 
 # Future Improvements
-1. Use SSL
-2. Consider pulling business logic out of controllers and into services instead
-3. Loosen the exact search queries to allow for partial text matching
-4. Add rate limiter
-5. Provide caching 
+1. Loosen the exact search queries to allow for partial text matching
+2. Add rate limiter
+3. Provide caching 
